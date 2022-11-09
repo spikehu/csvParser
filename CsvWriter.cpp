@@ -4,7 +4,7 @@
 
 #include "CsvWriter.h"
 
-CsvParser::CsvParser(const std::string &fileName):col_size(0),row_size(0),push_item_sz(0) {
+CsvWriter::CsvWriter(const std::string &fileName): col_size(0), row_size(0), push_item_sz(0) {
     of.open(fileName,std::ofstream::app);
     if(!of.is_open())
     {
@@ -17,7 +17,7 @@ CsvParser::CsvParser(const std::string &fileName):col_size(0),row_size(0),push_i
 //传入的是字符串数组
 //写入格式为: header1,header2,...headern
 //return : 返回header的个数
-int CsvParser::writeHeader(const std::vector<std::string> &headers) {
+int CsvWriter::writeHeader(const std::vector<std::string> &headers) {
     int sz = headers.size();
     col_size = sz;
     initHash(headers);
@@ -27,7 +27,7 @@ int CsvParser::writeHeader(const std::vector<std::string> &headers) {
     return sz;
 }
 
-void CsvParser::push_row_data(const std::string &header, const std::string &item) {
+void CsvWriter::push_row_data(const std::string &header, const std::string &item) {
     if(index_hash.count(header)==0)
     {
         for (auto it : index_hash)
@@ -41,7 +41,7 @@ void CsvParser::push_row_data(const std::string &header, const std::string &item
     push_item_sz++;
 }
 
-int CsvParser::write_row() {
+int CsvWriter::write_row() {
     if(push_item_sz != col_size)
         {
             std::cout<<push_item_sz<<","<<col_size<<std::endl;
@@ -56,7 +56,7 @@ int CsvParser::write_row() {
     return 0;
 }
 
-void CsvParser::writeData(const std::vector<std::string> &content) {
+void CsvWriter::writeData(const std::vector<std::string> &content) {
     for(int i =0; i < content.size() - 1; i++)
     {
         of << content[i] << ',';
@@ -64,10 +64,19 @@ void CsvParser::writeData(const std::vector<std::string> &content) {
     of << content.back() << '\n';
 }
 
-void CsvParser::initHash(const std::vector<std::string> &headers) {
+void CsvWriter::initHash(const std::vector<std::string> &headers) {
         for(int i =0;i<headers.size();i++)
         {
             index_hash[headers[i]] = i;
         }
+}
+
+int CsvWriter::colSize() {
+    return col_size;
+
+}
+
+int CsvWriter::rowSize() {
+    return row_size;
 }
 

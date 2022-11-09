@@ -13,10 +13,10 @@
 #include <iostream>
 
 
-class CsvParser {
+class CsvWriter {
 public:
     //构造函数 传入文件的路径
-    CsvParser(const std::string &fileName);
+    CsvWriter(const std::string &fileName);
 
 
     int writeHeader(const std::vector<std::string>& headers);
@@ -24,6 +24,8 @@ public:
     int write_row();
     void writeData(const std::vector<std::string> &content);
     void  initHash(const std::vector<std::string> &headers);
+    int colSize();
+    int rowSize();
 
 private:
     std::ofstream of;
